@@ -35,8 +35,7 @@ function TitlesManager() {
   };
   const handleEditTitle = (index: number) => {
     const newTitle = prompt("Edit the title:", titles[index].title);
-    const newContent =
-      prompt("Edit the Content:", titles[index].title) || titles[index].content;
+    const newContent = prompt("Edit the Content:", titles[index].content);
     if (newTitle) {
       const updatedTitles = titles.map((title, i) =>
         i === index ? { title: newTitle, content: newContent } : title
