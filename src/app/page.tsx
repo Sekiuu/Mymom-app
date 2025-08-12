@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "React";
 import Arrow from "./components/arrow";
 import { home_text_spacial_th } from "../../public/datas";
 export default function Home() {
