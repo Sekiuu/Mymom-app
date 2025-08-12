@@ -32,7 +32,7 @@ function Feeder() {
   }, []); // Add empty dependency array to prevent infinite loop
   return (
     <main className="h-fit overflow-hidden">
-      <header className="md:fixed flex max-md:order-last md:top-10 md:left-10 max-md:left-5">
+      <header className="md:absolute flex max-md:order-last md:top-10 md:left-10 max-md:left-5">
         <a
           href="/"
           className="flex items-center transform hover:scale-110 max-md:hover:scale-100 duration-500 shadow-lg rounded-full p-2 bg-white/50 text-black px-5 max-md:scale-75 z-20"
