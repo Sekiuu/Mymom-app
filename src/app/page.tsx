@@ -1,11 +1,16 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, use } from "react";
 import Arrow from "./components/arrow";
 export default function Home() {
   const [randomText, setRandomText] = useState({ title: "", content: "" });
   const [lang, setLang] = useState("");
   // Get language from localStorage if available
   const storedLang = localStorage.getItem("selectedLang");
+  useMemo(() => {
+    if (storedLang) {
+      setLang(storedLang);
+    }
+  }, [storedLang]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -21,22 +26,7 @@ export default function Home() {
       }
     };
     fetchData();
-
-    if (storedLang) {
-      setLang(storedLang);
-    }
-    // Listen for changes in localStorage (e.g., from another tab or language changer)
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === "selectedLang" && e.newValue) {
-        setLang(e.newValue);
-      }
-    };
-    window.addEventListener("storage", handleStorageChange);
-
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, [storedLang]);
+  }, []);
 
   return (
     <main>
