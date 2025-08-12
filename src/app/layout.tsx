@@ -32,7 +32,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${kanit.className} antialiased`}
       >
-        {/* <LanguageChanger /> */}
+        <LanguageChanger />
         {children}
       </body>
     </html>
