@@ -5,21 +5,21 @@ main {
   @apply bg-radial from-blue-500 to-violet-700 text-white;
 }
 h1 {
-  @apply md:text-7xl text-4xl font-bold;
+  @apply xl:text-7xl text-4xl font-bold;
 }
 h2 {
-  @apply md:text-4xl text-xl opacity-70;
+  @apply xl:text-4xl text-xl opacity-70;
 }
-.cta-a{
+.cta-a {
   @apply bg-sky-500 hover:bg-linear-to-r hover:from-sky-500 hover:to-rose-500 text-white font-bold py-5 px-8 shadow rounded-full w-fit;
   @apply duration-300 transition-all transform hover:scale-110;
   @apply hover:cursor-pointer hover:shadow-lg;
 }
-.cta-b{
+.cta-b {
   @apply bg-sky-500 hover:bg-rose-500 text-white font-bold py-5 px-8 shadow rounded-xl w-fit;
   @apply duration-300 transition-all transform hover:scale-110;
   @apply hover:cursor-pointer hover:shadow-lg;
 }
-span.card{
+span.card {
   @apply bg-white/50 text-black p-2 rounded-lg shadow-lg;
 }

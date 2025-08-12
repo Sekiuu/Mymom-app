@@ -28,45 +28,45 @@ function Feeder() {
     fetchRandomImage();
   }, []); // Add empty dependency array to prevent infinite loop
   return (
-    <main className="h-fit">
+    <main className="h-fit overflow-hidden">
       <header className="md:fixed flex max-md:order-last md:top-10 md:left-10 max-md:left-5">
         <a
           href="/"
-          className="flex items-center transfrom hover:scale-110 max-md:hover:scale-100 duration-500 shadow-lg rounded-full p-2 bg-white/50 text-black px-5 max-md:scale-75 z-20"
+          className="flex items-center transform hover:scale-110 max-md:hover:scale-100 duration-500 shadow-lg rounded-full p-2 bg-white/50 text-black px-5 max-md:scale-75 z-20"
         >
           <Arrow size="2em" />
           <h3 className="ml-2 max">Back</h3>
         </a>
       </header>
 
-      <div className="text-center mt-10 max-md:order-first">
-        {/* promt */}
+      <div className="text-center w-full flex flex-col items-center justify-center mt-10 max-md:order-first">
+        {/* prompt */}
         <h1>What happen today?</h1>
         {/* content */}
         {feed.text ? (
-          <h2
+          <span
             className={
-              "font-bold text-[100%] my-10 transfrom transition-ease-in transition-discrete" +
+              "font-bold text-2xl my-10 transform transition-ease-in transition-discrete" +
               (shown
                 ? " text-white/80 translate-y-0 duration-500"
                 : " text-white/0 translate-y-10 duration-0 ")
             }
           >
             {feed.text}
-          </h2>
+          </span>
         ) : (
           ""
         )}
         {/* pictures card*/}
 
-        <div className="flex mx-auto aspect-square md:w-1/2 w-4/5 mt-10">
+        <div className="w-4/5 mx-auto aspect-square md:w-1/2 mt-10">
           {shown ? (
             ""
           ) : (
             //button to show the image
-            <div className="absolute inset-0 z-10 flex items-center justify-center">
+            <div className="absolute xl:h-full max-xl:inset-0 left-0 right-0 z-10 flex items-center justify-center">
               <button
-                className="absolute cta-b z-20"
+                className="cta-b z-20"
                 onClick={() => {
                   setShown(true);
                 }}
@@ -80,10 +80,10 @@ function Feeder() {
             <Image
               src={feed.img}
               alt={feed.text}
-              width={500}
-              height={500}
+              width={1024}
+              height={1024}
               className={
-                "object-cover aspect-square rounded-md" +
+                "object-cover aspect-square rounded-md w-max-[1024px]" +
                 (shown ? "" : " blur-lg")
               }
             />
@@ -111,8 +111,9 @@ function Feeder() {
             style="ml-2 transform group-hover:translate-x-2 group-hover:scale-200 duration-300"
           />
         </span>
+
         <span className="font-regular italic text-gray-200/80">
-          want to see more? cick me!
+          want to see more? click me!
         </span>
       </button>
     </main>
