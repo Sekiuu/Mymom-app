@@ -3,6 +3,7 @@ import React from "react";
 import Arrow from "../components/arrow";
 import Image from "next/image";
 import { useState, useEffect } from "react";
+
 function Feeder() {
   const [images, setImgs] = useState<{ img: string; text: string }[]>([]);
   const [feed, setRandomImage] = useState({ img: "", text: "" });
@@ -16,7 +17,9 @@ function Feeder() {
   useEffect(() => {
     const fetchRandomImage = async () => {
       try {
-        const response = await fetch("/api/getFeeds_th");
+        const response = await fetch(
+          "/api/getDatas?filepath=datas/feed_data_th.json"
+        );
         const data = await response.json();
         console.log(data);
         setImgs(data);

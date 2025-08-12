@@ -1,13 +1,42 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Arrow from "./components/arrow";
-import { home_text_spacial_th } from "../../public/datas";
 export default function Home() {
   const [randomText, setRandomText] = useState({ title: "", content: "" });
+  const [lang, setLang] = useState("");
   useEffect(() => {
-    const randomIndex = Math.floor(Math.random() * home_text_spacial_th.length);
-    setRandomText(home_text_spacial_th[randomIndex]);
-  });
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "/api/getDatas?filepath=datas/home_text_th.json"
+        );
+        if (!response.ok) throw new Error("Failed to fetch data");
+        const data = await response.json();
+        console.log(data);
+        setRandomText(data[Math.floor(Math.random() * data.length)]);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+
+    // Get language from localStorage if available
+    const storedLang = localStorage.getItem("selectedLang");
+    if (storedLang) {
+      setLang(storedLang);
+    }
+    // Listen for changes in localStorage (e.g., from another tab or language changer)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "selectedLang" && e.newValue) {
+        setLang(e.newValue);
+      }
+    };
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
 
   return (
     <main>
@@ -22,7 +51,9 @@ export default function Home() {
           className="cta-a my-10 flex mx-auto group text-[150%]"
           href="/feeder"
         >
-          <h3 className="w-fit text-gray-100">Feed me with your love.</h3>
+          <h3 className="w-fit text-gray-100">
+            {lang == "th" ? "เกิดอะไรขึ้นบ้าง?" : "What happen today?"}
+          </h3>
           {/* right arrow */}
           <Arrow
             right={true}

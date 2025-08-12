@@ -7,6 +7,9 @@ main {
 h1 {
   @apply xl:text-7xl text-4xl font-bold;
 }
+div h1 {
+  @apply xl:text-5xl text-2xl font-bold;
+}
 h2 {
   @apply xl:text-4xl text-xl opacity-70;
 }
@@ -16,7 +19,7 @@ h2 {
   @apply hover:cursor-pointer hover:shadow-lg;
 }
 .cta-b {
-  @apply bg-sky-500 hover:bg-rose-500 text-white font-bold py-5 px-8 shadow rounded-xl w-fit;
+  @apply bg-sky-500 hover:bg-rose-500 text-white font-bold px-2 py-1 rounded-xl w-fit;
   @apply duration-300 transition-all transform hover:scale-110;
   @apply hover:cursor-pointer hover:shadow-lg;
 }
