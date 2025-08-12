@@ -3,7 +3,6 @@ import React from "react";
 import Arrow from "../components/arrow";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { ACTION_REFRESH } from "next/dist/client/components/router-reducer/router-reducer-types";
 function Feeder() {
   const [images, setImgs] = useState<{ img: string; text: string }[]>([]);
   const [feed, setRandomImage] = useState({ img: "", text: "" });

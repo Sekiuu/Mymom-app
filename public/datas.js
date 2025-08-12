@@ -8,28 +8,39 @@ export const home_text_spacial = [
     content: "I miss you too. Let's see what happen today.",
   },
 ];
+export const home_text_spacial_th = [
+  {
+    title: "Happy Mother's Day",
+    content: "แฮปี้เอวี่เดย์ แฮปปี้เอวี่ไทม์ ชอบของขวัญมั้ยจ๊ะ",
+  },
+  {
+    title: "Do you miss me?",
+    content: "ฉันก็คิดถึงคุณเหมือนกัน มาดูกันว่าวันนี้จะเป็นยังไงบ้าง?",
+  },
+];
 export const feed_spacial = [
   {
-    img:"/imgs/qr_payment/qr_1.jpg",
-    text: "Happy Mother's Day from me to you. Ops! did you just own me a favor ;)"
+    img: "/imgs/qr_payment/qr_1.jpg",
+    text: "Happy Mother's Day from me to you. Ops! did you just own me a favor ;)",
   },
   {
-    img:"/imgs/qr_payment/qr_2.jpg",
-    text: "Do you miss me? I miss you too. Let's give me some love. ei ei :) "
+    img: "/imgs/qr_payment/qr_2.jpg",
+    text: "Do you miss me? I miss you too. Let's give me some love. ei ei :) ",
   },
   {
-    img:"/imgs/qr_payment/qr_3.jpg",
-    text: " You can't escape from me. I'm always here. eiei :)"
+    img: "/imgs/qr_payment/qr_3.jpg",
+    text: " You can't escape from me. I'm always here. eiei :)",
   },
   {
-    img:"/imgs/qr_payment/qr_4.jpg",
-    text: "eiei :)"
+    img: "/imgs/qr_payment/qr_4.jpg",
+    text: "eiei :)",
   },
   {
-    img:"/imgs/qr_payment/qr_5.jpg",
-    text: "eiei >3<"
-  }
-]
+    img: "/imgs/qr_payment/qr_5.jpg",
+    text: "eiei >3<",
+  },
+];
+
 // export const home_text = [
 //   {
 //     title: "Dorm food situation",

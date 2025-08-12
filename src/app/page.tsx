@@ -1,16 +1,22 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import Arrow from "./components/arrow";
+import { home_text_spacial_th } from "../../public/datas";
 export default function Home() {
+  const [randomText, setRandomText] = useState({ title: "", content: "" });
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * home_text_spacial_th.length);
+    setRandomText(home_text_spacial_th[randomIndex]);
+  });
+
   return (
     <main>
       <div className="text-center">
         {/* quote */}
-        <h1> Happy Mother's Day </h1>
+        <h1> {randomText.title} </h1>
         {/* sub text */}
         <span>
-          <h2 className="my-2">
-            Happy every day, happy every times. I hope you love this gift.
-          </h2>
+          <h2 className="my-2">{randomText.content}</h2>
         </span>
         <a
           className="cta-a my-10 flex mx-auto group text-[150%]"
