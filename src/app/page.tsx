@@ -4,6 +4,8 @@ import Arrow from "./components/arrow";
 export default function Home() {
   const [randomText, setRandomText] = useState({ title: "", content: "" });
   const [lang, setLang] = useState("");
+  // Get language from localStorage if available
+  const storedLang = localStorage.getItem("selectedLang");
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -20,8 +22,6 @@ export default function Home() {
     };
     fetchData();
 
-    // Get language from localStorage if available
-    const storedLang = localStorage.getItem("selectedLang");
     if (storedLang) {
       setLang(storedLang);
     }
@@ -36,7 +36,7 @@ export default function Home() {
     return () => {
       window.removeEventListener("storage", handleStorageChange);
     };
-  }, []);
+  }, [storedLang]);
 
   return (
     <main>
