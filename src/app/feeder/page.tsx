@@ -46,7 +46,7 @@ function Feeder() {
         {feed.text ? (
           <h2
             className={
-              "font-bold my-10 transfrom transition-ease-in transition-discrete" +
+              "font-bold text-[100%] my-10 transfrom transition-ease-in transition-discrete" +
               (shown
                 ? " text-white/80 translate-y-0 duration-500"
                 : " text-white/0 translate-y-10 duration-0 ")
