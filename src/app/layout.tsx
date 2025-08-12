@@ -28,11 +28,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="th">
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${kanit.className} antialiased`}
       >
-        <LanguageChanger />
+        {/* <LanguageChanger /> */}
         {children}
       </body>
     </html>
