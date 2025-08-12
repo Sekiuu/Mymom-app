@@ -2,6 +2,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import PlusIcon from "../components/plus_icon";
+import { title } from "process";
 function TitlesManager() {
   const [titles, setTitles] = useState<{ title: string; content: string }[]>(
     []
@@ -27,15 +28,18 @@ function TitlesManager() {
 
   const handleAddTitle = () => {
     const newTitle = prompt("Enter a new title:");
+    const newContent = prompt("Enter a content") || "- nothing -";
     if (newTitle) {
-      setTitles([...titles, { title: newTitle, content: "" }]);
+      setTitles([...titles, { title: newTitle, content: newContent }]);
     }
   };
   const handleEditTitle = (index: number) => {
     const newTitle = prompt("Edit the title:", titles[index].title);
+    const newContent =
+      prompt("Edit the Content:", titles[index].title) || titles[index].content;
     if (newTitle) {
       const updatedTitles = titles.map((title, i) =>
-        i === index ? { ...title, title: newTitle } : title
+        i === index ? { title: newTitle, content: newContent } : title
       );
       setTitles(updatedTitles);
     }
