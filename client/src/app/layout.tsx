@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Kanit } from "next/font/google";
 import "./globals.css";
-import LanguageChanger from "./components/lang";
+import { SessionProvider } from "next-auth/react";
 const kanit = Kanit({
   variable: "--font-kanit",
   subsets: ["latin", "thai"],
@@ -32,8 +32,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${kanit.className} antialiased`}
       >
-        <LanguageChanger />
-        {children}
+        <SessionProvider>
+          {children}
+          </SessionProvider>
+        {/* {children} */}
       </body>
     </html>
   );

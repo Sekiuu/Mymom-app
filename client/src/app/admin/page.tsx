@@ -1,29 +1,30 @@
-import React from "react";
-import Arrow from "../components/arrow";
-import FeedPost from "./feed_post";
-import TitlesManager from "./titles_manager";
+"use client";
+import React, { useEffect } from "react";
+import TextPost from "./textForm";
+import TextView from "./textView";
+// import { PostRecord } from "../../lib/schemas";
+import { BackButton } from "../components/BackButton";
+import { PageHeader } from "../components/PageHeader";
 function Admin() {
+  const [selectedText, setSelectedText] = React.useState(null);
+  const [Reload, setReload] = React.useState(false);
   return (
     <main className="h-fit overflow-hidden">
-      <header className="md:fixed flex max-md:order-last md:top-10 md:left-10 max-md:left-5">
-        <a
-          href="/"
-          className="flex items-center transform hover:scale-110 max-md:hover:scale-100 duration-500 shadow-lg rounded-full p-2 bg-white/50 text-black px-5 max-md:scale-75 z-20"
-        >
-          <Arrow size="2em" />
-          <h3 className="ml-2">Back</h3>
-        </a>
-      </header>
+      <BackButton href="/" />
 
-      <h1>Admin Page</h1>
-      <span className="font-bold text-2xl my-2 border-b-4 border-gray-200/80 pb-2 w-4/5 text-center mx-auto">
-        Manage your feeds and settings here.
-      </span>
+      <PageHeader title="Admin Page" subtitle="Manage your feeds and settings here." />
 
       {/* Add admin functionalities here */}
-      <div className="flex justify-start items-start mt-5 bg-black/20 p-5 rounded-lg shadow-lg gap-5">
-        <FeedPost />
-        <TitlesManager />
+      <div className="flex flex-col md:flex-row justify-start items-start mt-5 bg-black/20 p-5 rounded-lg shadow-lg gap-8 w-4/5 mx-auto">
+        <div className="md:w-1/3 w-full">
+          <TextPost initial={selectedText || null} onCancel={()=>{
+            setSelectedText(null);
+            setReload(!Reload);
+          }} onSaved={(t)=>setReload(!Reload)} />
+        </div>
+        <div className="md:w-2/3 w-full">
+          <TextView Reload={Reload} onSelect={(t)=> setSelectedText(t)} />
+        </div>
       </div>
     </main>
   );

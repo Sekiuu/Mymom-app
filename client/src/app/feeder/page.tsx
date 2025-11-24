@@ -1,125 +1,130 @@
 "use client";
-import React from "react";
-import Arrow from "../components/arrow";
-import Image from "next/image";
-import { useState, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { api } from "../../lib/api";
+import { FeedCard } from "./components/FeedCard";
+import { FilterBar, FilterOption } from "./components/FilterBar";
+import { FeedItem } from "./types";
+import { LoadingSpinner } from "../components/LoadingSpinner";
+import { ErrorMessage } from "../components/ErrorMessage";
+import { ImageModal } from "../components/ImageModal";
+import { EmptyState } from "../components/EmptyState";
+import { RefreshButton } from "../components/RefreshButton";
+import { LoadMoreButton } from "../components/LoadMoreButton";
+import { UserButton } from "../components";
+import PostCreateForm from "../components/PostCreateForm";
+import { useSession } from "next-auth/react";
 
-function Feeder() {
-  const [images, setImgs] = useState<{ img: string; text: string }[]>([]);
-  const [feed, setRandomImage] = useState({ img: "", text: "" });
-  const [shown, setShown] = useState(false);
+const FILTERS: readonly FilterOption[] = [
+  { id: "all", label: "All moments" },
+  { id: "photos", label: "Photo stories" },
+  { id: "notes", label: "Notebook" },
+] as const;
 
-  const getRandomImage = (imgs: { img: string; text: string }[]) => {
-    if (!imgs || imgs.length === 0) return { img: "", text: "" };
-    const randomIndex = Math.floor(Math.random() * imgs.length);
-    return imgs[randomIndex];
-  };
+export default function Feeder() {
+  const [feeds, setFeeds] = useState<FeedItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [visibleCount, setVisibleCount] = useState(6);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [activeFilter, setActiveFilter] = useState<typeof FILTERS[number]["id"]>("all");
+  const { data: session } = useSession();
+
+  const loadFeeds = useCallback(async () => {
+    setError(null);
+    setLoading(true);
+    try {
+      const res = await api.get("/posts");
+      const data = res?.data ?? [];
+      if (!Array.isArray(data)) throw new Error("Unexpected response");
+      const sorted = (data as FeedItem[]).sort((a, b) => {
+        const aTime = new Date(a.create_at ?? 0).getTime();
+        const bTime = new Date(b.create_at ?? 0).getTime();
+        return bTime - aTime;
+      });
+      setFeeds(sorted);
+    } catch (err: any) {
+      console.error(err);
+      setError(err?.message ?? "Failed to load feed");
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  }, []);
+
   useEffect(() => {
-    const fetchRandomImage = async () => {
-      try {
-        const response = await fetch(
-          "/api/getDatas?filepath=datas/feed_data_th.json"
-        );
-        const data = await response.json();
-        console.log(data);
-        setImgs(data);
-        setRandomImage(getRandomImage(data));
-      } catch (error) {
-        console.error("Failed to fetch images:", error);
-      }
-    };
-    fetchRandomImage();
-  }, []); // Add empty dependency array to prevent infinite loop
+    loadFeeds();
+  }, [loadFeeds]);
+
+  const filteredFeeds = useMemo(() => {
+    if (activeFilter === "photos") {
+      return feeds.filter((item) => Boolean(item.image));
+    }
+    if (activeFilter === "notes") {
+      return feeds.filter((item) => !item.image);
+    }
+    return feeds;
+  }, [feeds, activeFilter]);
+
+  const visible = filteredFeeds.slice(0, visibleCount);
+
+  async function handleRefresh() {
+    setRefreshing(true);
+    setVisibleCount(6);
+    await loadFeeds();
+  }
+
   return (
-    <main className="h-fit overflow-hidden">
-      <header className="md:absolute flex max-md:order-last md:top-10 md:left-10 max-md:left-5">
-        <a
-          href="/"
-          className="flex items-center transform hover:scale-110 max-md:hover:scale-100 duration-500 shadow-lg rounded-full p-2 bg-white/50 text-black px-5 max-md:scale-75 z-20"
-        >
-          <Arrow size="2em" />
-          <h3 className="ml-2 max">Back</h3>
-        </a>
-      </header>
+    <main className="min-h-screen">
+      <UserButton />
+      <div className="grid grid-cols-3 mx-auto">
+        <PostCreateForm user_id={session?.user?.id} username={session?.user?.username} />
+        <div className="max-w-7xl mx-auto px-4 py-10 space-y-8">
 
-      <div className="text-center w-full flex flex-col items-center justify-center mt-10 max-md:order-first">
-        {/* prompt */}
-        <h1>What happen today?</h1>
-        {/* content */}
-        {feed.text ? (
-          <span
-            className={
-              "font-bold text-2xl my-10 transform transition-ease-in transition-discrete" +
-              (shown
-                ? " text-white/80 translate-y-0 duration-500"
-                : " text-white/0 translate-y-10 duration-0 ")
-            }
-          >
-            {feed.text}
-          </span>
-        ) : (
-          ""
-        )}
-        {/* pictures card*/}
+          <FilterBar
+            filters={FILTERS}
+            activeFilter={activeFilter}
+            onChange={(filterId) => {
+              setActiveFilter(filterId);
+              setVisibleCount(6);
+            }}
+            count={filteredFeeds.length}
+          />
 
-        <div className="w-4/5 mx-auto aspect-square md:w-1/2 mt-10">
-          {shown ? (
-            ""
-          ) : (
-            //button to show the image
-            <div className="absolute xl:h-full max-xl:inset-0 left-0 right-0 z-10 flex items-center justify-center">
-              <button
-                className="cta-b z-20"
-                onClick={() => {
-                  setShown(true);
-                }}
-              >
-                <h2>Tap to see!!</h2>
-              </button>
-            </div>
-          )}
-          {/* shown img */}
-          {feed.img ? (
-            <Image
-              src={feed.img}
-              alt={feed.text}
-              width={1024}
-              height={1024}
-              className={
-                "object-cover aspect-square rounded-md w-max-[1024px]" +
-                (shown ? "" : " blur-lg")
-              }
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            {error && <ErrorMessage message={error} onRetry={handleRefresh} />}
+            <RefreshButton onClick={handleRefresh} refreshing={refreshing} className="self-start md:self-auto" />
+          </div>
+
+          {loading && <LoadingSpinner />}
+
+          {!loading && !filteredFeeds.length && (
+            <EmptyState
+              title="Nothing in this lane yet"
+              description="Switch filters or be the first to share a moment."
             />
-          ) : (
-            <h1 className="text-black">Loading...</h1>
+          )}
+
+          <div className="space-y-6">
+            {visible.map((item) => (
+              <FeedCard
+                key={item.id ?? item.content}
+                item={item}
+                user_id={session?.user?.id}
+                onSelectImage={(url) => setSelectedImage(url ?? null)}
+              />
+            ))}
+          </div>
+
+          {visibleCount < filteredFeeds.length && (
+            <LoadMoreButton onClick={() => setVisibleCount((c) => c + 4)} />
           )}
         </div>
       </div>
-      {/* button to random other img */}
-      <button
-        className={
-          "cta-a my-10 group duration-300 transition-all" +
-          (shown ? " opacity-100" : " opacity-0")
-        }
-        onClick={() => {
-          setShown(false);
-          setRandomImage(getRandomImage(images));
-        }}
-      >
-        <span className="flex items-center w-fit mx-auto">
-          <h2>see other one!</h2>
-          <Arrow
-            right
-            size="1em"
-            style="ml-2 transform group-hover:translate-x-2 group-hover:scale-200 duration-300"
-          />
-        </span>
 
-        <span className="font-regular italic text-gray-200/80">
-          want to see more? click me!
-        </span>
-      </button>
+      {selectedImage && (
+        <ImageModal imageUrl={selectedImage} onClose={() => setSelectedImage(null)} />
+      )}
     </main>
   );
 }
-export default Feeder;

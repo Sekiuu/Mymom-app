@@ -5,6 +5,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DB_URL")
+  // schemas = ["public", "dev"]
 }
 
 model users {
@@ -13,4 +14,17 @@ model users {
   email      String   @unique
   password   String
   create_at DateTime @default(now())
+
+  // @@schema("dev")
+}
+
+model posts {
+  id        String   @id @default(uuid())
+  user_id   String
+  username      String
+  content   String
+  image     String?
+  create_at DateTime @default(now())
+
+  // @@schema("dev")
 }
