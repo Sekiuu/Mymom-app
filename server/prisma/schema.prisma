@@ -21,7 +21,7 @@ model users {
 model posts {
   id        String   @id @default(uuid())
   user_id   String
-  username      String
+  username  String
   content   String
   image     String?
   create_at DateTime @default(now())
